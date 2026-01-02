@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입 정보 입력</title>
+
+    <!-- ✅ 공통 CSS -->
+    <link rel="stylesheet" href="/static/common/common.css" />
+    <!-- ✅ 페이지 전용 CSS -->
+    <link rel="stylesheet" href="register.css" />
+</head>
+
+<body>
+<!-- ✅ 공통 HTML 주입 자리(공통만 “추가”) -->
+<div id="app-banner"></div>
+<div id="app-header"></div>
+
+<!-- ✅ terms.html 구조 그대로 -->
+<div class="wrap">
+    <div class="title">
+        <h1>회원가입 정보 입력</h1>
+        <p>필수 정보를 모두 입력해야 가입이 완료됩니다.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="step">
+                <span class="badge req">2/2</span>
+                <span class="step-text">기본 정보 입력</span>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <form id="registerForm" novalidate>
+                <!-- 아이디 -->
+                <div class="field">
+                    <label for="userId">아이디 <span class="badge req">필수</span></label>
+                    <div class="row">
+                        <input type="text" id="userId" name="userId" placeholder="아이디를 입력하세요" autocomplete="username" />
+                        <button type="button" class="btn" id="checkIdBtn">중복확인</button>
+                    </div>
+                    <div class="help" id="idHelp">영문/숫자 조합 권장 (목업)</div>
+                </div>
+
+                <!-- 비밀번호 -->
+                <div class="field">
+                    <label for="userPw">비밀번호 <span class="badge req">필수</span></label>
+                    <input type="password" id="userPw" name="userPw" placeholder="비밀번호를 입력하세요" autocomplete="new-password" />
+                    <div class="help">8자 이상 권장 (목업)</div>
+                </div>
+
+                <!-- 비밀번호 확인 -->
+                <div class="field">
+                    <label for="userPw2">비밀번호 확인 <span class="badge req">필수</span></label>
+                    <input type="password" id="userPw2" name="userPw2" placeholder="비밀번호를 다시 입력하세요" autocomplete="new-password" />
+                    <div class="help" id="pwHelp"></div>
+                </div>
+
+                <!-- 이름 -->
+                <div class="field">
+                    <label for="userName">이름 <span class="badge req">필수</span></label>
+                    <input type="text" id="userName" name="userName" placeholder="이름을 입력하세요" autocomplete="name" />
+                </div>
+
+                <!-- 이메일 -->
+                <div class="field">
+                    <label for="email">이메일 <span class="badge req">필수</span></label>
+                    <input type="email" id="email" name="email" placeholder="example@email.com" autocomplete="email" />
+                    <div class="help" id="emailHelp"></div>
+                </div>
+
+                <!-- 휴대폰 -->
+                <div class="field">
+                    <label for="phone">휴대폰 <span class="badge req">필수</span></label>
+                    <input type="tel" id="phone" name="phone" placeholder="010-0000-0000" autocomplete="tel" />
+                    <div class="help">숫자만 입력해도 자동으로 하이픈이 들어갑니다.</div>
+                </div>
+
+                <!-- 주소 (2단계) -->
+                <div class="field">
+                    <label>주소 <span class="badge req">필수</span></label>
+
+                    <div class="row">
+                        <input type="text" id="postcode" name="postcode" placeholder="우편번호 (목업)" readonly />
+                        <button type="button" class="btn" id="addrBtn">주소 검색</button>
+                    </div>
+
+                    <input type="text" id="addr1" name="addr1" placeholder="기본 주소" readonly />
+                    <input type="text" id="addr2" name="addr2" placeholder="상세 주소를 입력하세요 (2단계)" />
+                    <div class="help" id="addrHelp">주소 검색은 추후 API 연결용 (목업)</div>
+                </div>
+            </form>
+        </div>
+
+        <div class="footer">
+            <div class="hint">
+                <b>*</b> 필수 항목을 모두 입력해주세요.
+                <span id="msg"></span>
+            </div>
+
+            <div class="btns">
+                <button type="button" class="btn" id="prevBtn">이전</button>
+                <button type="button" class="btn primary" id="submitBtn" disabled>가입 완료</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ 공통 footer 주입 자리 -->
+<div id="app-footer"></div>
+
+<!-- ✅ layout.js 확정 -->
+<script src="/static/common/layout.js"></script>
+
+<!-- ✅ register 페이지 JS (목업/검증) -->
+<script>
+    (function(){
+      const $ = (id) => document.getElementById(id);
+
+      const userId = $('userId');
+      const userPw = $('userPw');
+      const userPw2 = $('userPw2');
+      const userName = $('userName');
+      const email = $('email');
+      const phone = $('phone');
+      const postcode = $('postcode');
+      const addr1 = $('addr1');
+      const addr2 = $('addr2');
+
+      const idHelp = $('idHelp');
+      const pwHelp = $('pwHelp');
+      const emailHelp = $('emailHelp');
+      const addrHelp = $('addrHelp');
+
+      const msg = $('msg');
+      const submitBtn = $('submitBtn');
+
+      function isEmail(v){
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      }
+
+      function normalizePhone(v){
+        const digits = v.replace(/\D/g, '').slice(0, 11);
+        if(digits.length <= 3) return digits;
+        if(digits.length <= 7) return digits.slice(0,3) + '-' + digits.slice(3);
+        return digits.slice(0,3) + '-' + digits.slice(3,7) + '-' + digits.slice(7);
+      }
+
+      function setMsg(text, bad){
+        msg.textContent = text || '';
+        msg.style.color = bad ? '#ef4444' : '';
+      }
+
+      function validate(){
+        // pw match
+        if(userPw.value && userPw2.value){
+          if(userPw.value !== userPw2.value){
+            pwHelp.textContent = '비밀번호가 일치하지 않습니다.';
+            pwHelp.style.color = '#ef4444';
+          }else{
+            pwHelp.textContent = '비밀번호가 일치합니다.';
+            pwHelp.style.color = '';
+          }
+        }else{
+          pwHelp.textContent = '';
+        }
+
+        // email
+        if(email.value){
+          if(!isEmail(email.value)){
+            emailHelp.textContent = '이메일 형식을 확인해주세요.';
+            emailHelp.style.color = '#ef4444';
+          }else{
+            emailHelp.textContent = '';
+            emailHelp.style.color = '';
+          }
+        }else{
+          emailHelp.textContent = '';
+        }
+
+        const requiredOk =
+          userId.value.trim() &&
+          userPw.value.trim() &&
+          userPw2.value.trim() &&
+          (userPw.value === userPw2.value) &&
+          userName.value.trim() &&
+          email.value.trim() &&
+          isEmail(email.value.trim()) &&
+          phone.value.trim() &&
+          postcode.value.trim() &&
+          addr1.value.trim() &&
+          addr2.value.trim();
+
+        submitBtn.disabled = !requiredOk;
+
+        if(!requiredOk){
+          setMsg('필수 항목을 모두 입력해주세요.', true);
+        }else{
+          setMsg('', false);
+        }
+      }
+
+      // 아이디 중복확인(목업)
+      $('checkIdBtn').addEventListener('click', () => {
+        const v = userId.value.trim();
+        if(!v){
+          alert('아이디를 입력해주세요.');
+          userId.focus();
+          return;
+        }
+        // 목업: 아무거나 통과
+        alert('사용 가능한 아이디입니다. (목업)');
+        idHelp.textContent = '중복확인 완료 (목업)';
+      });
+
+      // 주소검색(목업)
+      $('addrBtn').addEventListener('click', () => {
+        // 추후 다음/카카오/우편번호 API 연결 자리
+        postcode.value = '12345';
+        addr1.value = '서울특별시 어딘가구 어딘가로 12 (목업)';
+        addr2.focus();
+        addrHelp.textContent = '주소가 입력되었습니다. 상세 주소를 입력해주세요.';
+        validate();
+      });
+
+      // 이전/완료
+      $('prevBtn').addEventListener('click', () => {
+        location.href = 'terms.html';
+      });
+
+      $('submitBtn').addEventListener('click', () => {
+        if(submitBtn.disabled) return;
+        alert('회원가입 완료(목업)\\n※ 추후 서버 연동 시 POST로 전송하세요.');
+        // 예: location.href = '../login/login.html';
+      });
+
+      // input listeners
+      [userId, userPw, userPw2, userName, email, addr2].forEach(el => {
+        el.addEventListener('input', validate);
+        el.addEventListener('blur', validate);
+      });
+
+      phone.addEventListener('input', (e) => {
+        e.target.value = normalizePhone(e.target.value);
+        validate();
+      });
+
+      validate();
+    })();
+</script>
+</body>
+</html>

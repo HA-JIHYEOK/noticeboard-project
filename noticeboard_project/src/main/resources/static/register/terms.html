@@ -5,186 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>약관 동의</title>
-    <style>
-        :root{
-          --bg:#f6f7fb;
-          --card:#ffffff;
-          --text:#111827;
-          --muted:#6b7280;
-          --line:#e5e7eb;
-          --primary:#2563eb;
-          --primary-hover:#1d4ed8;
-          --danger:#ef4444;
-          --shadow: 0 10px 25px rgba(0,0,0,.06);
-          --radius:16px;
-        }
-        *{box-sizing:border-box;}
-        body{
-          margin:0;
-          font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-          background:var(--bg);
-          color:var(--text);
-        }
-        /* PC 전용 */
-        .wrap{
-          width: 920px;
-          margin: 48px auto;
-          padding: 0 12px;
-        }
-        .title{
-          display:flex;
-          align-items:flex-end;
-          justify-content:space-between;
-          margin-bottom: 14px;
-        }
-        .title h1{
-          margin:0;
-          font-size: 26px;
-          letter-spacing:-0.5px;
-        }
-        .title p{
-          margin:0;
-          color:var(--muted);
-          font-size: 13px;
-        }
-        .card{
-          background:var(--card);
-          border:1px solid var(--line);
-          border-radius: var(--radius);
-          box-shadow: var(--shadow);
-          overflow:hidden;
-        }
-        .card-header{
-          padding: 18px 22px;
-          border-bottom:1px solid var(--line);
-          background: linear-gradient(180deg, #ffffff, #fbfbff);
-        }
-        .all-agree{
-          display:flex;
-          align-items:center;
-          gap:10px;
-          font-weight:700;
-          font-size: 15px;
-        }
-        .card-body{
-          padding: 18px 22px 8px;
-        }
 
-        .item{
-          padding: 14px 0;
-          border-bottom: 1px dashed var(--line);
-        }
-        .item:last-child{
-          border-bottom:none;
-        }
-        .item-top{
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:10px;
-          margin-bottom: 10px;
-        }
-        .left{
-          display:flex;
-          align-items:center;
-          gap:10px;
-          min-width: 0;
-        }
-        .badge{
-          font-size: 12px;
-          padding: 4px 8px;
-          border-radius: 999px;
-          border:1px solid var(--line);
-          color: var(--muted);
-          white-space:nowrap;
-        }
-        .badge.req{
-          border-color: rgba(239,68,68,.25);
-          color: var(--danger);
-          background: rgba(239,68,68,.06);
-        }
-        .badge.opt{
-          border-color: rgba(37,99,235,.22);
-          color: var(--primary);
-          background: rgba(37,99,235,.06);
-        }
-
-        label{ cursor:pointer; }
-        input[type="checkbox"]{
-          width: 18px;
-          height: 18px;
-          accent-color: var(--primary);
-          cursor:pointer;
-        }
-        .term-name{
-          font-weight: 700;
-          white-space:nowrap;
-          overflow:hidden;
-          text-overflow:ellipsis;
-        }
-        .term-desc{
-          color:var(--muted);
-          font-size: 13px;
-          margin-left: 28px;
-          margin-top: -2px;
-        }
-        .terms-box{
-          margin-left: 28px;
-          background: #fafafa;
-          border:1px solid var(--line);
-          border-radius: 12px;
-          height: 140px;
-          overflow:auto;
-          padding: 12px 14px;
-          font-size: 13px;
-          line-height: 1.6;
-          color:#374151;
-        }
-
-        .footer{
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:12px;
-          padding: 18px 22px;
-          border-top:1px solid var(--line);
-          background:#fff;
-        }
-        .hint{
-          color: var(--muted);
-          font-size: 13px;
-        }
-        .hint b{ color: var(--danger); }
-        #msg{ margin-left:10px; }
-
-        .btns{
-          display:flex;
-          gap:10px;
-        }
-        .btn{
-          height: 44px;
-          padding: 0 16px;
-          border-radius: 12px;
-          border:1px solid var(--line);
-          background:#fff;
-          cursor:pointer;
-          font-weight: 700;
-        }
-        .btn:hover{ background:#f9fafb; }
-        .btn.primary{
-          border-color: rgba(37,99,235,.35);
-          background: var(--primary);
-          color:#fff;
-        }
-        .btn.primary:hover{ background: var(--primary-hover); }
-        .btn.primary:disabled{
-          cursor:not-allowed;
-          opacity:.45;
-        }
-    </style>
+    <!-- ✅ 공통 CSS -->
+    <link rel="stylesheet" href="/static/common/common.css" />
+    <!-- ✅ 페이지 전용 CSS -->
+    <link rel="stylesheet" href="terms.css" />
 </head>
 
 <body>
+<!-- ✅ 공통 HTML 주입 자리(공통만 “추가”) -->
+<div id="app-banner"></div>
+<div id="app-header"></div>
+
+<!-- ✅ 여기부터는 니가 준 구조 “그대로” -->
 <div class="wrap">
     <div class="title">
         <h1>회원가입 약관 동의</h1>
@@ -268,6 +101,13 @@
     </div>
 </div>
 
+<!-- ✅ 공통 footer 주입 자리 -->
+<div id="app-footer"></div>
+
+<!-- ✅ layout.js 확정 -->
+<script src="/static/common/layout.js"></script>
+
+<!-- ✅ 니 JS 그대로 -->
 <script>
     (function(){
       const agreeAll = document.getElementById('agreeAll');
@@ -301,7 +141,6 @@
         });
       });
 
-      // ✅ 다음 단계 이동(목업): 필수 체크면 register.html로 이동
       nextBtn.addEventListener('click', () => {
         if(!(a1.checked && a2.checked)){
           alert('필수 약관에 동의해야 다음 단계로 이동할 수 있습니다.');

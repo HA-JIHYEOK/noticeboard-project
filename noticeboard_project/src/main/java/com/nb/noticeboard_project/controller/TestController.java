@@ -6,13 +6,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class TestController {
-
-    @GetMapping("/test")
-    public String test() {
-        return "Hee23";
-    }
-    @GetMapping("/")
+    @GetMapping("/terms")
     public String test2() {
-        return "forward:index.html";
+        return "forward:register/terms.html";
     }
+
+    @GetMapping("/register")
+    public String test3() {
+        return "forward:register/register.html";
+    }
+
+    /*@GetMapping("/terms")
+    public String test3() {
+        return "forward:register/terms.html";
+    }*/
+
 }

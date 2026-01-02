@@ -1,0 +1,492 @@
+/* =========================================================
+   Common Layout CSS (Header / Nav / Footer / Utilities)
+   - Page-specific "section" styles should go to each page css.
+   - Namespace: app- (to avoid collisions)
+   ========================================================= */
+
+/* -------------------------
+   0) Reset / Base
+------------------------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif;
+  color: var(--app-text);
+  background: var(--app-bg);
+  line-height: 1.5;
+}
+
+img, svg, video, canvas { max-width: 100%; height: auto; display: block; }
+
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font: inherit; }
+
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--app-primary) 65%, #fff 35%);
+  outline-offset: 2px;
+}
+
+/* -------------------------
+   1) Design Tokens
+------------------------- */
+:root {
+  /* layout */
+  --app-max: 1200px;
+  --app-gutter: 20px;
+  --app-radius: 14px;
+
+  /* spacing scale */
+  --app-s1: 6px;
+  --app-s2: 10px;
+  --app-s3: 14px;
+  --app-s4: 18px;
+  --app-s5: 24px;
+  --app-s6: 32px;
+
+  /* colors */
+  --app-bg: #0b0f17;
+  --app-surface: #0f172a;
+  --app-surface-2: #111c33;
+  --app-text: #e5e7eb;
+  --app-muted: #a7b0c0;
+
+  --app-line: #1f2937;            /* 어두운 라인(밝은 테두리 지양) */
+  --app-primary: #7c3aed;         /* 포인트 */
+  --app-primary-2: #ec4899;       /* 보조 포인트 */
+  --app-danger: #ef4444;
+
+  /* shadow */
+  --app-shadow: 0 10px 30px rgba(0,0,0,0.35);
+
+  /* header heights */
+  --app-banner-h: 42px;
+  --app-header-h: 68px;
+
+  /* motion */
+  --app-fast: 120ms;
+  --app-normal: 180ms;
+}
+
+/* -------------------------
+   2) Containers / Grid
+------------------------- */
+.app-container {
+  max-width: var(--app-max);
+  margin: 0 auto;
+  padding: 0 var(--app-gutter);
+}
+
+.app-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+  /* section은 각 페이지에서 스타일 */
+  padding: var(--app-s6) 0;
+}
+
+/* -------------------------
+   3) Banner (Top)
+------------------------- */
+.app-banner {
+  height: var(--app-banner-h);
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--app-primary) 60%, #000 40%),
+    color-mix(in srgb, var(--app-primary-2) 55%, #000 45%)
+  );
+  color: #fff;
+}
+
+.app-banner__inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--app-s3);
+}
+
+.app-banner__text {
+  font-size: 13px;
+  opacity: 0.95;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-banner__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--app-s2);
+}
+
+.app-link {
+  font-size: 13px;
+  opacity: 0.95;
+}
+.app-link:hover { opacity: 1; text-decoration: underline; }
+
+/* -------------------------
+   4) Header
+------------------------- */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(11, 15, 23, 0.78);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--app-line);
+}
+
+.app-header__inner {
+  height: var(--app-header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--app-s4);
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--app-s2);
+  min-width: 180px;
+}
+
+.app-brand__logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: radial-gradient(circle at 30% 30%,
+    color-mix(in srgb, var(--app-primary) 75%, #fff 25%),
+    color-mix(in srgb, var(--app-primary-2) 65%, #000 35%)
+  );
+  box-shadow: 0 10px 18px rgba(0,0,0,0.35);
+}
+
+.app-brand__name {
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.app-brand__sub {
+  font-size: 12px;
+  color: var(--app-muted);
+  margin-top: -2px;
+}
+
+.app-header__right {
+  display: flex;
+  align-items: center;
+  gap: var(--app-s2);
+}
+
+/* -------------------------
+   5) Nav
+------------------------- */
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--app-s2);
+
+  /* 브랜드 쪽으로 살짝 붙이기(왼쪽 이동) */
+  margin-left: calc(var(--app-s3) * -1);
+}
+
+.app-nav__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: var(--app-muted);
+  transition: transform var(--app-fast) ease, background var(--app-normal) ease, color var(--app-normal) ease;
+}
+
+.app-nav__item:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--app-text);
+}
+
+.app-nav__item[aria-current="page"],
+.app-nav__item.is-active {
+  background: rgba(124,58,237,0.18);
+  color: #fff;
+}
+
+.app-nav__badge {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--app-line);
+  color: var(--app-text);
+}
+
+/* 헤더 중앙 검색창 */
+.app-header-search {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 240px;
+}
+
+.app-header-search__input {
+  width: min(520px, 100%);
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--app-line);
+  background: rgba(255,255,255,0.06);
+  color: var(--app-text);
+  outline: none;
+}
+
+.app-header-search__input::placeholder {
+  color: color-mix(in srgb, var(--app-muted) 85%, #000 15%);
+}
+
+.app-header-search__input:focus {
+  border-color: rgba(124,58,237,0.55);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.18);
+}
+
+/* Header actions (우측 영역) */
+.app-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--app-s2);
+}
+
+/* ✅ DC 느낌 롤링 인기검색어(클릭 가능) */
+.app-trending {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid var(--app-line);
+  background: rgba(255,255,255,0.04);
+  color: var(--app-text);
+  overflow: hidden;
+  min-width: 260px;
+}
+
+.app-trending__label {
+  font-size: 12px;
+  color: var(--app-muted);
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06);
+  white-space: nowrap;
+}
+
+.app-trending__viewport {
+  position: relative;
+  height: 18px;            /* 한 줄만 보이게 */
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+}
+
+.app-trending__track {
+  display: grid;
+  gap: 0;
+
+  /* ✅ 3초마다 한 줄씩 "툭" 올라가되, 위로 올라가는 애니메이션 자체는 유지 */
+  animation: appTrendingUp 15s steps(5) infinite;
+  will-change: transform;
+}
+
+.app-trending__item {
+  height: 18px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: var(--app-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.95;
+
+  /* 링크 클릭 영역 확보 */
+  min-width: 0;
+}
+
+/* 링크 호버/포커스 느낌 (DC처럼 과하지 않게) */
+.app-trending__item:hover {
+  text-decoration: underline;
+  opacity: 1;
+}
+
+.app-trending__item:focus-visible {
+  outline: 2px solid rgba(124,58,237,0.55);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* 5개 + 5개(복제) = 10줄
+   18px * 5 = 90px 만큼 올리면 자연 루프 */
+@keyframes appTrendingUp {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-90px); }
+}
+
+/* -------------------------
+   6) Buttons (common)
+------------------------- */
+.app-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--app-line);
+  background: rgba(255,255,255,0.06);
+  color: var(--app-text);
+  cursor: pointer;
+  transition: transform var(--app-fast) ease, background var(--app-normal) ease, border-color var(--app-normal) ease;
+}
+
+.app-btn:hover {
+  background: rgba(255,255,255,0.09);
+  transform: translateY(-1px);
+}
+
+.app-btn:active { transform: translateY(0); }
+
+.app-btn--primary {
+  border-color: rgba(124,58,237,0.55);
+  background: linear-gradient(90deg,
+    rgba(124,58,237,0.55),
+    rgba(236,72,153,0.40)
+  );
+}
+
+.app-btn--ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--app-muted);
+}
+.app-btn--ghost:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--app-text);
+}
+
+/* -------------------------
+   7) Common Card / Panel (section에서 재사용 가능)
+   - section 자체는 각 페이지에서, 카드만 공통으로 제공
+------------------------- */
+.app-card {
+  border-radius: var(--app-radius);
+  background: linear-gradient(180deg, var(--app-surface), var(--app-surface-2));
+  box-shadow: var(--app-shadow);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.app-card__head {
+  padding: var(--app-s5);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.app-card__body {
+  padding: var(--app-s5);
+}
+
+.app-card__title {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: -0.2px;
+}
+
+.app-card__desc {
+  margin: 8px 0 0;
+  color: var(--app-muted);
+  font-size: 13px;
+}
+
+/* -------------------------
+   8) Footer
+------------------------- */
+.app-footer {
+  border-top: 1px solid var(--app-line);
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.app-footer__inner {
+  padding: var(--app-s6) 0;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: var(--app-s6);
+}
+
+.app-footer__title {
+  font-weight: 800;
+  margin: 0 0 var(--app-s2);
+}
+
+.app-footer__text {
+  margin: 0;
+  color: var(--app-muted);
+  font-size: 13px;
+}
+
+.app-footer__links {
+  display: grid;
+  gap: var(--app-s2);
+  font-size: 13px;
+  color: var(--app-muted);
+}
+.app-footer__links a:hover { color: var(--app-text); text-decoration: underline; }
+
+.app-footer__bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: var(--app-s4) 0;
+  color: var(--app-muted);
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--app-s3);
+  flex-wrap: wrap;
+}
+
+/* -------------------------
+   9) Utilities
+------------------------- */
+.app-hide { display: none !important; }
+.app-muted { color: var(--app-muted) !important; }
+.app-center { display: grid; place-items: center; }
+.app-row { display: flex; align-items: center; gap: var(--app-s3); }
+.app-wrap { flex-wrap: wrap; }
+.app-spacer { flex: 1; }
+
+/* -------------------------
+   10) Responsive
+------------------------- */
+@media (max-width: 980px) {
+  .app-footer__inner { grid-template-columns: 1fr; }
+  .app-brand { min-width: auto; }
+  .app-trending { min-width: 220px; }
+}
+
+@media (max-width: 760px) {
+  .app-nav { display: none; } /* 모바일은 보통 햄버거로 대체(페이지별 구현) */
+  .app-header-search { display: none; } /* 모바일에서 검색창 숨김 */
+  .app-trending { display: none; } /* 모바일에서는 트렌딩 숨김 */
+
+  .app-header__inner { gap: var(--app-s2); }
+  .app-btn { height: 38px; padding: 0 12px; }
+}

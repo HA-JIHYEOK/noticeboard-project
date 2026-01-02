@@ -1,0 +1,220 @@
+/* 페이지 전용: terms.css
+   - 기존 구조/클래스명 유지
+   - 색감만 common.css 토큰에 맞춤
+*/
+:root{
+  --bg: var(--app-bg);
+  --card: linear-gradient(180deg, var(--app-surface), var(--app-surface-2));
+  --text: var(--app-text);
+  --muted: var(--app-muted);
+  --line: rgba(255,255,255,0.06);
+  --primary: var(--app-primary);
+  --primary-hover: color-mix(in srgb, var(--app-primary) 70%, #ffffff 30%);
+  --danger: #ef4444;
+  --shadow: var(--app-shadow);
+  --radius: 16px;
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* PC 전용 (구조 그대로) */
+.wrap{
+  width: 920px;
+  margin: 48px auto;
+  padding: 0 12px;
+}
+
+.title{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  margin-bottom: 14px;
+}
+.title h1{
+  margin:0;
+  font-size: 26px;
+  letter-spacing:-0.5px;
+}
+.title p{
+  margin:0;
+  color:var(--muted);
+  font-size: 13px;
+}
+
+/* 카드 */
+.card{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+
+.card-header{
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255,255,255,0.02);
+}
+
+.all-agree{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:700;
+  font-size: 15px;
+}
+
+.card-body{
+  padding: 18px 22px 8px;
+}
+
+.item{
+  padding: 14px 0;
+  border-bottom: 1px dashed rgba(255,255,255,0.10);
+}
+.item:last-child{ border-bottom:none; }
+
+.item-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom: 10px;
+}
+
+.left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width: 0;
+}
+
+.badge{
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  white-space:nowrap;
+  background: rgba(255,255,255,0.03);
+}
+
+.badge.req{
+  border-color: rgba(239,68,68,.25);
+  color: #ffb4b4;
+  background: rgba(239,68,68,.10);
+}
+
+.badge.opt{
+  border-color: rgba(124,58,237,.30);
+  color: #d7c7ff;
+  background: rgba(124,58,237,.12);
+}
+
+label{ cursor:pointer; }
+
+/* 체크박스(기존 그대로) */
+input[type="checkbox"]{
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor:pointer;
+}
+
+.term-name{
+  font-weight: 700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.term-desc{
+  color:var(--muted);
+  font-size: 13px;
+  margin-left: 28px;
+  margin-top: -2px;
+}
+
+/* 약관 박스 */
+.terms-box{
+  margin-left: 28px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  height: 140px;
+  overflow:auto;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--app-text) 80%, var(--app-muted) 20%);
+}
+
+/* footer 영역 */
+.footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding: 18px 22px;
+  border-top: 1px solid var(--line);
+  background: rgba(255,255,255,0.02);
+}
+
+.hint{
+  color: var(--muted);
+  font-size: 13px;
+}
+.hint b{ color: #ffb4b4; }
+#msg{ margin-left:10px; }
+
+/* 버튼 */
+.btns{
+  display:flex;
+  gap:10px;
+}
+
+.btn{
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.04);
+  cursor:pointer;
+  font-weight: 700;
+  color: var(--text);
+}
+.btn:hover{ background: rgba(255,255,255,0.07); }
+
+.btn.primary{
+  border-color: rgba(124,58,237,.45);
+  background: linear-gradient(90deg,
+    rgba(124,58,237,0.55),
+    rgba(236,72,153,0.40)
+  );
+  color:#fff;
+}
+.btn.primary:hover{
+  background: linear-gradient(90deg,
+    rgba(124,58,237,0.70),
+    rgba(236,72,153,0.52)
+  );
+}
+
+.btn.primary:disabled{
+  cursor:not-allowed;
+  opacity:.45;
+}
+
+/* 반응형 */
+@media (max-width: 960px){
+  .wrap{ width: 100%; margin: 24px auto; }
+  .title{ flex-direction: column; align-items: flex-start; gap: 6px; }
+  .footer{ flex-direction: column; align-items: stretch; }
+  .btns{ justify-content: flex-end; }
+}
